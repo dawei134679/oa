@@ -1,0 +1,9 @@
+body{
+	width: 100%;height: 100%;
+}
+.laytable-cell-checkbox, .laytable-cell-numbers, .laytable-cell-radio, .laytable-cell-space{
+   padding: 5px 0px;
+ }
+ .layui-table, .layui-table-view{
+   margin:0px 0px;
+ }

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>OA-待我审核-采购流程详情</title>
+<link rel="stylesheet" href="../res/css/weui.min.css">
+<link rel="stylesheet" href="../res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="../res/css/common.css">
+</head>
+<body>
+	<!-- 页面内容 -->
+	<div id="App">
+		<div class="weui-loadmore" v-if="loadok != 0">
+		  <i class="weui-loading"></i>
+		  <span class="weui-loadmore__tips">正在加载</span>
+		</div>
+		<div class="doubao-body" v-if="loadok == 0" v-cloak>
+			<!-- 头部 -->
+			<div class="doubao-header">
+				<div class="left_warp">
+					<a href="javascript:window.history.back();"><span>&lt;返回</span></a>
+				</div>
+				<div class="center_warp">
+					<span>采购信息</span>
+				</div>
+				<div class="right_warp">
+				</div>
+			</div>
+			<!-- 内容 -->
+			<div class="doubao-content" style="padding-bottom:50px;">
+				<div class="weui-cells weui-cells_form">
+			      
+			      <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">标题</label></div>
+				    <div class="weui-cell__bd">
+				      {{ info.title }}
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cells__title">备注</div>
+					<div class="weui-cells weui-cells_form">
+					  <div class="weui-cell">
+					    <div class="weui-cell__bd">
+					      {{ info.remark }}
+					    </div>
+					  </div>
+				  </div>
+				  
+				 
+				  <div class="weui-cells__title">明细</div>
+				  
+			  	  <div class="weui-cells">
+	  				<div class="weui-cell" v-for="(item, index) in subDetails">
+						<div class="item-warp">
+							<div>名称：{{item.name}}</div>
+							<div>
+								<div class="half">规格：{{item.specifications}}</div>
+								<div class="half">数量：{{item.num}}</div>
+							</div>
+							<div>
+								<div class="half">单位：{{item.unit}}</div>
+								<div class="half">价格：{{item.price}}</div>
+							</div>
+							<div>说明：{{item.description}}</div>
+						</div>
+	  				</div>
+			  	  </div>
+				  
+				  <div class="weui-cells__title">审核记录</div>
+				  
+			  	  <div class="weui-cells">
+	  				<div class="weui-cell" v-for="(item, index) in logs">
+						<div class="item-warp">
+							<div>
+								{{item.approvalUserName}}
+								[{{formatStatus(item.approvalStatus)}}]
+                				{{formatDate(item.approvalTime)}}
+							</div>
+						</div>
+	  				</div>
+			  	  </div>
+				  
+				</div><!-- end form -->
+				
+			</div>
+			<!-- 底部 -->
+			<div class="doubao-bottom-fixed">
+				<div class="leftMenu" style="background:#dc2f55;" v-on:click="audit('reject')">
+					拒绝
+				</div>
+				<div class="rightMenu" style="background:#3f944a;" v-on:click="audit('pass')">
+					同意
+				</div>
+		  	</div>
+			
+		</div>
+	</div>
+	<!-- 脚本 -->
+	<script src="../res/js/jquery.min.js"></script>
+	<script src="../res/js/fastclick.min.js"></script>
+	<script src="../res/js/jquery.cookie.min.js"></script>
+	<script src="../res/js/jquery-weui.min.js"></script>
+	<script src="../res/js/swiper.min.js"></script>
+	<script src="../res/js/city-picker.min.js"></script>
+	<script src="../res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="../res/js/vue.dev.js"></script>
+	<script src="../res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+				el : '#App',
+				data : {
+					loadok:1,
+					info: {
+				    	title: "",
+				        remark: "",
+				        applyCode:""
+				    },
+				    item: {
+				        name: "",
+				        specifications: "",
+				        num: "",
+				        unit: "",
+				        price: "",
+				        description: ""
+				    },
+				    subDetails: [],
+				    logs:[]//审核记录
+				},
+				mounted:function(){
+					setTimeout(this.init,1000);
+				},
+				methods:{
+					init(){
+						this.loadData();	
+					},
+					loadData(){
+						var applyCode = getQueryString('applyCode');
+						var data = {};
+						data.applyCode = applyCode;
+						dou.ajax({
+							url : "/front/purchase/getPurchaseProcessInfo",
+							data:data,
+							success:function(result){
+								if(result.code == '200'){
+									var d = result.data;
+									app.loadok = app.loadok - 1;
+									app.info = d.purchase;
+									app.subDetails = d.detailList;
+									app.logs = d.logs;
+								}
+							}
+						});
+					},
+					formatDate(str){
+				        return dou.formatDate(str,"yyyy-MM-dd HH:mm:ss");
+				    },
+				    formatStatus(str){
+				      return ['处理中','同意','拒绝'][str];
+				    },
+				    audit(str){
+				        var that = this;
+				        var status = 0,remarks = "";
+				        if(str == "reject"){
+				          status = 2;
+				          remarks = "拒绝";
+				        }else if(str == "pass"){
+				          status = 1;
+				          remarks = "同意";
+				        }else{
+				          alert('error');
+				          return;
+				        }
+				        $.confirm("确认"+remarks+"吗？", function() {
+				        	dou.ajax({
+								url : "/front/userWorkflowTask/approval",
+						        data:{
+						        	"applyCode":app.info.applyCode,
+						          	"status":status,
+						          	"remarks":remarks
+						        },
+						        success:function(d){
+						        	window.history.back();
+						        }
+					        });
+		    			});
+				        
+					}
+				}
+			});
+			
+			$(function() {
+				var str= navigator.userAgent.toLowerCase(); 
+			    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+			    if(!ver){//非IOS系统
+			    	FastClick.attach(document.body);
+			    }else{
+			        if(parseInt(ver[1])<11){
+			        	FastClick.attach(document.body);
+			        }
+			    }
+			});//end 初始化加载
+	</script>
+</body>
+</html>

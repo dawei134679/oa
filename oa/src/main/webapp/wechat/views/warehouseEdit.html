@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>进销存-仓库管理-修改容量</title>
+<link rel="stylesheet" href="../res/css/weui.min.css">
+<link rel="stylesheet" href="../res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="../res/css/common.css">
+</head>
+<body>
+	<!-- 页面内容 -->
+	<div id="App" class="doubao-body" v-cloak>
+		<!-- 头部 -->
+		<div class="doubao-header">
+			<div class="left_warp">
+				<a href="javascript:window.location.href='warehouseManager.html';"><span>&lt;返回</span></a>
+			</div>
+			<div class="center_warp">
+				<span>修改容量</span>
+			</div>
+			<div class="right_warp">
+				<a href="javascript:app.saveInfo();"><span>√保存</span></a>
+			</div>
+		</div>
+		<!-- 内容 -->
+		<div class="doubao-content" style="padding-bottom:50px;">
+			<div class="weui-cell">
+			    <div class="weui-cell__hd"><label class="weui-label">仓库剩余容量</label></div>
+			    <div class="weui-cell__bd">
+			      <input class="weui-input" type="text" v-model="item.capacity" placeholder="请输入仓库剩余容量">
+			    </div>
+			</div>
+		</div>
+		
+	</div>
+	<!-- 脚本 -->
+	<script src="../res/js/jquery.min.js"></script>
+	<script src="../res/js/fastclick.min.js"></script>
+	<script src="../res/js/jquery.cookie.min.js"></script>
+	<script src="../res/js/jquery-weui.min.js"></script>
+	<script src="../res/js/swiper.min.js"></script>
+	<script src="../res/js/city-picker.min.js"></script>
+	<script src="../res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="../res/js/vue.dev.js"></script>
+	<script src="../res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+				el : '#App',
+				data : {
+					item:{
+						id:'',
+						name:'',
+						capacity:''
+					}
+				},
+				mounted:function(){
+					setTimeout(this.init,1000);
+				},
+				methods:{
+					init(){
+						this.loadData();
+					},
+					loadData(){
+						app.item.id = getQueryString("id");
+						app.item.capacity = decodeURI(getQueryString("capacity"));
+					},
+					saveInfo(){
+						dou.ajax({
+							url : "/front/chManager/updateCwarehouseCapacity",
+							data:{"id":app.item.id,"capacity":app.item.capacity},
+							success:function(d){
+								if(d.code == "200"){
+									$.toptip(d.msg, 'success');
+									window.location.href='warehouseManager.html';
+								}else{
+									$.toptip(d.msg, 'error');
+								}
+							}
+						});
+					}
+				}
+			});
+			
+			$(function() {
+				var str= navigator.userAgent.toLowerCase(); 
+			    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+			    if(!ver){//非IOS系统
+			    	FastClick.attach(document.body);
+			    }else{
+			        if(parseInt(ver[1])<11){
+			        	FastClick.attach(document.body);
+			        }
+			    }
+			});//end 初始化加载
+	</script>
+</body>
+</html>

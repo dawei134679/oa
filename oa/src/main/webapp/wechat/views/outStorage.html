@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>进销存-出库</title>
+<link rel="stylesheet" href="../res/css/weui.min.css">
+<link rel="stylesheet" href="../res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="../res/css/common.css">
+</head>
+<body>
+	<!-- 页面内容 -->
+	<div id="App"> 
+		<div class="weui-loadmore" v-if="loadok != 0">
+		  <i class="weui-loading"></i>
+		  <span class="weui-loadmore__tips">正在加载</span>
+		</div>
+		<div class="doubao-body" v-if="loadok == 0" v-cloak>
+			<!-- 头部 -->
+			<div class="doubao-header">
+				<div class="left_warp">
+					<a href="javascript:window.history.back();"><span>&lt;返回</span></a>
+				</div>
+				<div class="center_warp">
+					<span>出库</span>
+				</div>
+				<div class="right_warp">
+				</div>
+			</div>
+			<!-- 内容 -->
+			<div class="doubao-content" style="padding-bottom:50px;">
+				<div class="weui-cells weui-cells_form">
+				  
+				  <div class="weui-cell weui-cell_select weui-cell_select-after">
+			        <div class="weui-cell__hd">
+			          <label for="" class="weui-label">运输类别</label>
+			        </div>
+			        <div class="weui-cell__bd">
+			          <select class="weui-select" v-model="transportTypeSelected">
+			            <option v-for="item in transportTypeMap" v-bind:value="item.value">{{ item.title }}</option>
+			          </select>
+			        </div>
+			      </div>
+			      
+			      <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">运输工具</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.tansportName" placeholder="请输入运输工具">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">航&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;次</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.tansportNo" placeholder="请输入航次">
+				    </div>
+				  </div>
+					
+				  <div class="weui-cells__title">集装箱/车皮/汽车/其它编号</div>
+					<div class="weui-cells">
+					  <div class="weui-cell">
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="text" v-model="info.transportCode" placeholder="请输入集装箱/车皮/汽车/其它编号">
+					    </div>
+					  </div>
+			      </div>
+			      
+			      <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">合同编号</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.contractCode" placeholder="请输入合同编号">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">提&nbsp;&nbsp;单&nbsp;&nbsp;号</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.billCode" placeholder="请输入提单号">
+				    </div>
+				  </div>
+				  
+			      <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">供&nbsp;&nbsp;应&nbsp;&nbsp;商</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.provider" placeholder="请输入供应商">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">负&nbsp;&nbsp;责&nbsp;&nbsp;人</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.responsibleMan" placeholder="请输入负责人">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">经&nbsp;&nbsp;办&nbsp;&nbsp;人</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.operator" placeholder="请输入经办人">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">日&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;期</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" id="operateTime" placeholder="请选择日期">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell">
+				    <div class="weui-cell__hd"><label class="weui-label">倒运编号</label></div>
+				    <div class="weui-cell__bd">
+				      <input class="weui-input" type="text" v-model="info.dTransportNo" placeholder="请输入倒运编号">
+				    </div>
+				  </div>
+				  
+				  <div class="weui-cell weui-cell_select weui-cell_select-after">
+			        <div class="weui-cell__hd">
+			          <label for="" class="weui-label">物种名称</label>
+			        </div>
+			        <div class="weui-cell__bd">
+			          <select class="weui-select" v-model="wtypeSelected">
+			            <option v-for="item in wtypeNameMap" v-bind:value="item.id">{{ item.name }}</option>
+			          </select>
+			        </div>
+			      </div>
+				  
+				  <div class="weui-cells__title">出库明细</div>
+				  
+			  	  <div class="weui-cells__title">
+			  		<a href="javascript:app.addDetail();" class="weui-btn weui-btn_plain-primary">添加出库明细</a>
+			  	  </div>
+			  	  
+			  	  <div class="weui-cells">
+	  					<div class="weui-cell" v-for="(item, index) in subDetails">
+							<div class="item-warp">
+								<div>物品编码：{{item.goodsCode}}</div>
+								<div>物品名称：{{item.goodsName}}</div>
+								<div>{{item.label}}</div>
+								<div>
+									<div class="half">仓库：{{item.warehouseName}}</div>
+									<div class="half">数量：{{item.goodsAmount}}</div>
+								</div>
+								<div>
+									<div class="half">运费：{{item.transportCost}}</div>
+									<div class="half">单位：{{item.goodsUnit}}</div>
+								</div>
+								<div>
+									<div class="half">倒运费：{{item.dTransportCost}}</div>
+									<div class="half">
+										<a href="javascript:;" v-on:click="delDetails(index)" class="del">删除</a>
+									</div>
+								</div>
+							</div>
+	  				</div>
+			  	  </div>
+				  
+				  <div id="addRuKuDetail" class="weui-popup__container">
+					<div class="weui-popup__overlay"></div>
+					<div class="weui-popup__modal">
+						<!-- 添加详情页面头部 -->
+						<div class="doubao-header">
+							<div class="left_warp">
+								<a href="javascript:$.closePopup();"><span>&lt;取消</span></a>
+							</div>
+							<div class="center_warp">
+								<span>出库</span>
+							</div>
+							<div class="right_warp">
+								<a href="javascript:app.saveDetail();"><span>√保存</span></a>
+							</div>
+						</div>			
+						<!-- 添加详情页内容 -->
+						<div class="weui-cell weui-cell_select weui-cell_select-after">
+					        <div class="weui-cell__hd">
+					          <label for="" class="weui-label">物品名称</label>
+					        </div>
+					        <div class="weui-cell__bd">
+					          <select class="weui-select" v-model="goodSelected" @change="changeGoodSelected">
+					            <option v-for="item in goodsNameMap" :value="item.id">{{ item.name }}</option>
+					          </select>
+					        </div>
+					    </div>
+					    
+					    <div class="weui-cell">
+						    <div class="weui-cell__hd"><label class="weui-label">物品编码</label></div>
+						    <div class="weui-cell__bd">
+						      {{ goodSelectedObject.code }}
+						    </div>
+						</div>
+	
+					    <div class="weui-cell">
+						    <div class="weui-cell__hd"><label class="weui-label">物品单位</label></div>
+						    <div class="weui-cell__bd">
+						      {{ goodSelectedObject.unit }}
+						    </div>
+						</div>
+						
+						<div class="weui-cell weui-cell_select weui-cell_select-after">
+					        <div class="weui-cell__hd">
+					          <label for="" class="weui-label">选择仓库</label>
+					        </div>
+					        <div class="weui-cell__bd">
+					          <select class="weui-select" v-model="warehouseSelected">
+					            <option v-for="item in warehouseNameMap" :value="item.id">{{ item.name }}</option>
+					          </select>
+					        </div>
+					    </div>
+					    
+					    <div class="weui-cell">
+						    <div class="weui-cell__hd"><label class="weui-label">数&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;量</label></div>
+						    <div class="weui-cell__bd">
+						      <input class="weui-input" type="number" v-model="item.goodsAmount" placeholder="请输入数量">
+						    </div>
+						</div>
+						
+						<div class="weui-cell">
+						    <div class="weui-cell__hd"><label class="weui-label">运&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;费</label></div>
+						    <div class="weui-cell__bd">
+						      <input class="weui-input" type="number" v-model="item.transportCost" placeholder="请输入运费">
+						    </div>
+						</div>
+					    
+						<div class="weui-cell">
+						    <div class="weui-cell__hd"><label class="weui-label">倒&nbsp;&nbsp;运&nbsp;&nbsp;费</label></div>
+						    <div class="weui-cell__bd">
+						      <input class="weui-input" type="number" v-model="item.dTransportCost" placeholder="请输入倒运费">
+						    </div>
+						</div>
+					    
+						<div class="weui-cells__title">备&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;注</div>
+						<div class="weui-cells weui-cells_form">
+						  <div class="weui-cell">
+						    <div class="weui-cell__bd">
+						      <textarea class="weui-textarea" placeholder="请输入备注" rows="3" v-model="item.note" ></textarea>
+						      <div class="weui-textarea-counter"><span>0</span>/200</div>
+						    </div>
+						  </div>
+						</div>
+						
+					</div>
+				  </div>
+				  
+				  
+				</div><!-- end form -->
+				
+			</div>
+			<!-- 底部 -->
+			<div class="doubao-bottom-fixed">
+				<div class="leftMenu">
+	
+				</div>
+				<div class="rightMenu" v-on:click="saveInfo">
+					提交
+				</div>
+		  	</div>
+			
+		</div>
+	</div>
+	<!-- 脚本 -->
+	<script src="../res/js/jquery.min.js"></script>
+	<script src="../res/js/fastclick.min.js"></script>
+	<script src="../res/js/jquery.cookie.min.js"></script>
+	<script src="../res/js/jquery-weui.min.js"></script>
+	<script src="../res/js/swiper.min.js"></script>
+	<script src="../res/js/city-picker.min.js"></script>
+	<script src="../res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="../res/js/vue.dev.js"></script>
+	<script src="../res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+				el : '#App',
+				data : {
+					loadok:3,
+					transportTypeMap : [
+						{title : "海运",value : 1}, 
+						{title : "陆地",value : 2}, 
+						{title : "其他",value : 3}
+					],
+					wtypeNameMap : [],
+					goodsNameMap : [],
+					warehouseNameMap : [],
+					subDetails:[],
+					transportTypeSelected:'',
+					wtypeSelected:'',
+					goodSelected:'',
+					goodSelectedObject:{},
+					warehouseSelected:'',
+					info: {
+						type: 2,
+						transportType: 0,
+						tansportName: "",
+						tansportNo: "",
+						transportCode: "",
+						billCode: "",
+						provider: "",
+						responsibleMan: "",
+						operator: "",
+						operateTime: "",
+						contractCode: "",
+						wtypeName: ""
+					},
+					item: {
+						goodsCode: "",
+						goodsName: "",
+						warehouseName: "",
+						goodsAmount: "",
+						goodsUnit: "",
+						transportCost: "",
+						dTransportCost: "",
+						note: ""
+					}
+				},
+				mounted:function(){
+					setTimeout(this.init,1000);
+				},
+				methods:{
+					init(){
+						$("#operateTime").datetimePicker({
+					        title: '选择时间',
+					        times: function () {
+					            return null;
+					        }
+						});
+						this.loadConfig();
+					},
+					loadConfig(){
+						var configList = [
+							{name:"transportTypeMap",selectOne:"transportTypeSelected",title:"仓库"},
+							{url:"/front/config/getAllWtypeConfigPage",name:"wtypeNameMap",selectOne:"wtypeSelected",title:"物种名称"},
+							{url:"/front/config/getAllWgoodsConfigPage",name:"goodsNameMap",selectOne:"goodSelected",selectObject:"goodSelectedObject",change:app.changeGoodSelected,title:"物品名称"},
+							{url:"/front/config/getwarehouseConfigPage",name:"warehouseNameMap",selectOne:"warehouseSelected",title:"仓库"}
+						];
+						var getConfig = function(opt){
+							if(opt.url){
+								dou.ajax({
+									url : opt.url,
+									hideLoading:true,
+									success:function(d){
+										if(d.code == '200'){
+											app.loadok = app.loadok - 1;
+											app[opt.name] = d.data;
+											if(opt.selectOne){
+												app[opt.selectOne] = d.data[0].id;
+												if(opt.selectObject){
+													app[opt.selectObject] = d.data[0];
+												}
+												if(opt.change){
+													opt.change();
+												}
+											}
+										}
+									}
+								});
+							}else{
+								if(opt.selectOne){
+									app[opt.selectOne] = app[opt.name][0].value;
+									if(opt.change){
+										opt.change();
+									}
+								}
+							}
+						} 
+						for(var i = 0;i<configList.length;i++){
+							var opt = configList[i];
+							getConfig(opt);
+						}
+					},
+					saveInfo(){
+						var operateTime = document.getElementById('operateTime').value;
+						app.info.operateTime = new Date(operateTime.trim()).getTime() / 1000;
+						var wtypeSelectJson = app.wtypeNameMap.filter(function(d){return d.id==app.wtypeSelected;})[0];
+						if(!wtypeSelectJson){
+							$.toptip("请等待数据加载完成!", "error");
+							return false;
+						}
+						app.info.wtypeName = wtypeSelectJson.name;
+						var cloneInfo = Object.assign({}, app.info);
+						for(var key in cloneInfo){
+							if(cloneInfo[key].length  == 0){
+								$.toast("请全部输入!", "text");
+								return false;
+							}
+						}
+						if(app.subDetails.length == 0){
+							$.toast("请填写出库明细!", "text");
+							return false;
+						}
+						cloneInfo.subDetails = JSON.stringify(app.subDetails);
+						
+						dou.ajax({
+							url : "/front/iodetail/saveIoDetail",
+							data:cloneInfo,
+							success:function(d){
+								if(d.code == '200'){
+									$.toast(d.msg, "success", function() {
+										window.history.back();
+									});
+								}else{
+									$.toptip(d.msg, 'error');
+								}
+							}
+						});
+					},
+					clearItemDetail(){
+						app.item.goodsCode = "";
+						app.item.goodsName = "";
+						app.item.warehouseName = "";
+						app.item.goodsAmount = "";
+						app.item.goodsUnit = "";
+						app.item.transportCost = "";
+						app.item.dTransportCost = "";
+						app.item.note = "";
+					},
+					addDetail(){
+						$('#addRuKuDetail').popup();
+					},
+					saveDetail(){//保存单个明细信息;
+						app.item.goodsCode = app.goodSelectedObject.code;
+						app.item.goodsName = app.goodSelectedObject.name;
+						app.item.goodsUnit = app.goodSelectedObject.unit;
+						app.item.warehouseName = app.warehouseNameMap.filter(function(d){return d.id==app.warehouseSelected;})[0].name;
+						var cloneItem = Object.assign({}, app.item)
+						for(var key in cloneItem){
+							if(cloneItem[key].length  == 0){
+								$.toast("请全部输入!", "text");
+								return false;
+							}
+						}
+						app.subDetails.push(cloneItem);
+						app.clearItemDetail();
+						$.closePopup();
+					},
+					delDetails(idx) {
+						this.subDetails.splice(idx, 1);
+					},
+					changeGoodSelected(){
+						var xuanzhong = app.goodsNameMap.filter(function(d){return d.id==app.goodSelected;})[0];
+						app.goodSelectedObject = xuanzhong;
+					}
+				}
+			});
+			
+			$(function() {
+				var str= navigator.userAgent.toLowerCase(); 
+			    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+			    if(!ver){//非IOS系统
+			    	FastClick.attach(document.body);
+			    }else{
+			        if(parseInt(ver[1])<11){
+			        	FastClick.attach(document.body);
+			        }
+			    }
+			});//end 初始化加载
+	</script>
+</body>
+</html>

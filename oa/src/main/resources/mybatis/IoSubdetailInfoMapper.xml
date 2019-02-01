@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.IoSubdetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.IoSubdetailInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="detail_order" property="detailOrder" jdbcType="VARCHAR" />
+    <result column="goods_code" property="goodsCode" jdbcType="VARCHAR" />
+    <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR" />
+    <result column="goods_amount" property="goodsAmount" jdbcType="INTEGER" />
+    <result column="pre_capacity" property="preCapacity" jdbcType="VARCHAR" />
+    <result column="transport_cost" property="transportCost" jdbcType="DOUBLE" />
+    <result column="d_transport_cost" property="dTransportCost" jdbcType="DOUBLE" />
+    <result column="note" property="note" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, detail_order, goods_code, warehouse_name, goods_amount, pre_capacity, transport_cost, 
+    d_transport_cost, note
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from in_out_subdetail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from in_out_subdetail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.IoSubdetailInfo" >
+    insert into in_out_subdetail (id, detail_order, goods_code, 
+      warehouse_name, goods_amount, pre_capacity, 
+      transport_cost, d_transport_cost, note
+      )
+    values (#{id,jdbcType=INTEGER}, #{detailOrder,jdbcType=VARCHAR}, #{goodsCode,jdbcType=VARCHAR}, 
+      #{warehouseName,jdbcType=VARCHAR}, #{goodsAmount,jdbcType=INTEGER}, #{preCapacity,jdbcType=VARCHAR}, 
+      #{transportCost,jdbcType=DOUBLE}, #{dTransportCost,jdbcType=DOUBLE}, #{note,jdbcType=VARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.IoSubdetailInfo" >
+    insert into in_out_subdetail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="detailOrder != null" >
+        detail_order,
+      </if>
+      <if test="goodsCode != null" >
+        goods_code,
+      </if>
+      <if test="warehouseName != null" >
+        warehouse_name,
+      </if>
+      <if test="goodsAmount != null" >
+        goods_amount,
+      </if>
+      <if test="preCapacity != null" >
+        pre_capacity,
+      </if>
+      <if test="transportCost != null" >
+        transport_cost,
+      </if>
+      <if test="dTransportCost != null" >
+        d_transport_cost,
+      </if>
+      <if test="note != null" >
+        note,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="detailOrder != null" >
+        #{detailOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCode != null" >
+        #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseName != null" >
+        #{warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAmount != null" >
+        #{goodsAmount,jdbcType=INTEGER},
+      </if>
+      <if test="preCapacity != null" >
+        #{preCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="transportCost != null" >
+        #{transportCost,jdbcType=DOUBLE},
+      </if>
+      <if test="dTransportCost != null" >
+        #{dTransportCost,jdbcType=DOUBLE},
+      </if>
+      <if test="note != null" >
+        #{note,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.IoSubdetailInfo" >
+    update in_out_subdetail
+    <set >
+      <if test="detailOrder != null" >
+        detail_order = #{detailOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsCode != null" >
+        goods_code = #{goodsCode,jdbcType=VARCHAR},
+      </if>
+      <if test="warehouseName != null" >
+        warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+      </if>
+      <if test="goodsAmount != null" >
+        goods_amount = #{goodsAmount,jdbcType=INTEGER},
+      </if>
+      <if test="preCapacity != null" >
+        pre_capacity = #{preCapacity,jdbcType=VARCHAR},
+      </if>
+      <if test="transportCost != null" >
+        transport_cost = #{transportCost,jdbcType=DOUBLE},
+      </if>
+      <if test="dTransportCost != null" >
+        d_transport_cost = #{dTransportCost,jdbcType=DOUBLE},
+      </if>
+      <if test="note != null" >
+        note = #{note,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.IoSubdetailInfo" >
+    update in_out_subdetail
+    set detail_order = #{detailOrder,jdbcType=VARCHAR},
+      goods_code = #{goodsCode,jdbcType=VARCHAR},
+      warehouse_name = #{warehouseName,jdbcType=VARCHAR},
+      goods_amount = #{goodsAmount,jdbcType=INTEGER},
+      pre_capacity = #{preCapacity,jdbcType=VARCHAR},
+      transport_cost = #{transportCost,jdbcType=DOUBLE},
+      d_transport_cost = #{dTransportCost,jdbcType=DOUBLE},
+      note = #{note,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getIoSubDetailPage" resultType="com.hkkj.oa.entity.SubDetail"
+		parameterType="com.hkkj.oa.dto.IoSubdetailParamDto">
+		SELECT
+			a.goods_code goodsCode,
+			b.name goodsName,
+			a.warehouse_name warehouseName,
+			a.goods_amount goodsAmount,
+			a.pre_capacity preCapacity,
+			b.unit goodsUnit,
+			a.transport_cost transportCost,
+			a.d_transport_cost	dTransportCost,
+			a.note
+		FROM
+		in_out_subdetail a
+		LEFT JOIN w_goods_menu b ON a.goods_code = b.code
+		where b.status = 1
+		<if test="detailOrder != null and detailOrder !=''">
+			and detail_order like concat("%",#{detailOrder},"%")
+		</if>
+	</select>
+</mapper>
+
+
+

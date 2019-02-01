@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.WorkflowMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.Workflow" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="status" property="status" jdbcType="BIT" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+    <result column="create_user_id" property="createUserId" jdbcType="INTEGER" />
+    <result column="modify_time" property="modifyTime" jdbcType="BIGINT" />
+    <result column="modify_user_id" property="modifyUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, name, status, remarks, create_time, create_user_id, modify_time, modify_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_workflow
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.Workflow" >
+    insert into t_workflow (id, code, name, 
+      status, remarks, create_time, 
+      create_user_id, modify_time, modify_user_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{name,jdbcType=VARCHAR}, 
+      #{status,jdbcType=BIT}, #{remarks,jdbcType=VARCHAR}, #{createTime,jdbcType=BIGINT}, 
+      #{createUserId,jdbcType=INTEGER}, #{modifyTime,jdbcType=BIGINT}, #{modifyUserId,jdbcType=INTEGER}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.Workflow" useGeneratedKeys="true" keyProperty="id">
+    insert into t_workflow
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="createUserId != null" >
+        create_user_id,
+      </if>
+      <if test="modifyTime != null" >
+        modify_time,
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=BIT},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyUserId != null" >
+        #{modifyUserId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.Workflow" >
+    update t_workflow
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=BIT},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null" >
+        create_user_id = #{createUserId,jdbcType=INTEGER},
+      </if>
+      <if test="modifyTime != null" >
+        modify_time = #{modifyTime,jdbcType=BIGINT},
+      </if>
+      <if test="modifyUserId != null" >
+        modify_user_id = #{modifyUserId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.Workflow" >
+    update t_workflow
+    set code = #{code,jdbcType=VARCHAR},
+      name = #{name,jdbcType=VARCHAR},
+      status = #{status,jdbcType=BIT},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      create_time = #{createTime,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=INTEGER},
+      modify_time = #{modifyTime,jdbcType=BIGINT},
+      modify_user_id = #{modifyUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+    <select id="getWorkflowByCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow
+    where status=1 and code = #{code,jdbcType=VARCHAR}
+  </select>
+  <select id="getWorkflowList" resultMap="BaseResultMap" parameterType="com.hkkj.oa.dto.WorkflowParamDto" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow
+    where status = 1
+		<if test="name != null and name!=''">
+			and name like concat("%",#{name},"%")
+		</if>
+  </select>
+  <update id="delWorkflowByIds" parameterType="com.hkkj.oa.dto.WorkflowParamDto">
+		update t_workflow
+		<set>
+			status = 0,
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=BIGINT},
+			</if>
+			<if test="modifyUserId != null">
+				modify_user_id = #{modifyUserId,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+  <select id="getWorkflowDetailByWorkflowId" resultType="com.hkkj.oa.dto.WorkflowApprovalDetailDto" parameterType="java.lang.Long" >
+   		SELECT 
+		   d.id workflowDetailId,
+		   d.code workflowDetailCode,
+		   d.parent_code workflowDetailParentCode,
+		   d.approval_id approvalUserId,
+		   s.user_code approvalUserCode,
+		   s.user_name approvalUserName,
+		   o.id approvalOrgId,
+		   o.org_code approvalOrgCode,
+		   o.org_name approvalOrgName
+		 FROM (
+		SELECT 
+		  t.id,
+		  t.code,
+		  t.parent_code,
+		  CASE WHEN t.type=1  THEN t.approval_id
+		       WHEN t.type=2 THEN (SELECT leader_id FROM s_organization WHERE id=t.approval_id) END approval_id
+		FROM
+		  t_workflow_detail t WHERE t.workflow_id=#{workflowId,jdbcType=BIGINT}) d 
+		  LEFT JOIN s_user s ON d.approval_id=s.id LEFT JOIN s_organization o ON s.org_id=o.id 
+  </select>
+</mapper>

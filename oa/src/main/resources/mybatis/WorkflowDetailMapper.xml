@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.WorkflowDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.WorkflowDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="approval_id" property="approvalId" jdbcType="INTEGER" />
+    <result column="workflow_id" property="workflowId" jdbcType="BIGINT" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="conditions" property="conditions" jdbcType="VARCHAR" />
+    <result column="parent_code" property="parentCode" jdbcType="VARCHAR" />
+    <result column="parent_id" property="parentId" jdbcType="BIGINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, approval_id, workflow_id, type, conditions, parent_code, parent_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_workflow_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.WorkflowDetail" >
+    insert into t_workflow_detail (id, code, approval_id, 
+      workflow_id, type, conditions, 
+      parent_code, parent_id)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{approvalId,jdbcType=INTEGER}, 
+      #{workflowId,jdbcType=BIGINT}, #{type,jdbcType=INTEGER}, #{conditions,jdbcType=VARCHAR}, 
+      #{parentCode,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.WorkflowDetail"  useGeneratedKeys="true" keyProperty="id">
+    insert into t_workflow_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="approvalId != null" >
+        approval_id,
+      </if>
+      <if test="workflowId != null" >
+        workflow_id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="conditions != null" >
+        conditions,
+      </if>
+      <if test="parentCode != null" >
+        parent_code,
+      </if>
+      <if test="parentId != null" >
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalId != null" >
+        #{approvalId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowId != null" >
+        #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=INTEGER},
+      </if>
+      <if test="conditions != null" >
+        #{conditions,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null" >
+        #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        #{parentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.WorkflowDetail" >
+    update t_workflow_detail
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalId != null" >
+        approval_id = #{approvalId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowId != null" >
+        workflow_id = #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="type != null" >
+        type = #{type,jdbcType=INTEGER},
+      </if>
+      <if test="conditions != null" >
+        conditions = #{conditions,jdbcType=VARCHAR},
+      </if>
+      <if test="parentCode != null" >
+        parent_code = #{parentCode,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null" >
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.WorkflowDetail" >
+    update t_workflow_detail
+    set code = #{code,jdbcType=VARCHAR},
+      approval_id = #{approvalId,jdbcType=INTEGER},
+      workflow_id = #{workflowId,jdbcType=BIGINT},
+      type = #{type,jdbcType=INTEGER},
+      conditions = #{conditions,jdbcType=VARCHAR},
+      parent_code = #{parentCode,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <select id="getWorkflowDetailRootByWorkflowId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_detail
+    where workflow_id = #{workflowId,jdbcType=BIGINT} and parent_code='0'
+  </select>
+  <select id="getWorkflowDetailByParentCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_detail
+    where parent_code = #{code,jdbcType=BIGINT}
+  </select>
+  <select id="getLowerLevelApprovalInfo" resultMap="BaseResultMap">
+ 	  SELECT 
+		  * 
+		FROM  t_workflow_detail t 
+		WHERE t.parent_code = 
+		  (SELECT  a.code 
+		  FROM t_workflow_detail a, t_workflow_apply b 
+		  WHERE a.workflow_id = b.workflow_id 
+		    AND b.code=#{applyCode,jdbcType=VARCHAR}
+		    AND a.approval_id = #{approvalUserId,jdbcType=INTEGER})
+  </select>
+</mapper>

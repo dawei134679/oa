@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.WorkflowApplyMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.WorkflowApply" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="code" property="code" jdbcType="VARCHAR" />
+    <result column="apply_time" property="applyTime" jdbcType="BIGINT" />
+    <result column="apply_user_id" property="applyUserId" jdbcType="INTEGER" />
+    <result column="workflow_id" property="workflowId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="approval_id" property="approvalId" jdbcType="INTEGER" />
+    <result column="approval_id" property="approvalId" jdbcType="INTEGER" />
+     <result column="extra" property="extra" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, code, apply_time, apply_user_id, workflow_id, status, approval_id,extra
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_apply
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_workflow_apply
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.WorkflowApply" >
+    insert into t_workflow_apply (id, code, apply_time, 
+      apply_user_id, workflow_id, status, 
+      approval_id,extra)
+    values (#{id,jdbcType=BIGINT}, #{code,jdbcType=VARCHAR}, #{applyTime,jdbcType=BIGINT}, 
+      #{applyUserId,jdbcType=INTEGER}, #{workflowId,jdbcType=BIGINT}, #{status,jdbcType=INTEGER}, 
+      #{approvalId,jdbcType=INTEGER},#{extra,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.WorkflowApply" useGeneratedKeys="true" keyProperty="id">
+    insert into t_workflow_apply
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="code != null" >
+        code,
+      </if>
+      <if test="applyTime != null" >
+        apply_time,
+      </if>
+      <if test="applyUserId != null" >
+        apply_user_id,
+      </if>
+      <if test="workflowId != null" >
+        workflow_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="approvalId != null" >
+        approval_id,
+      </if>
+       <if test="extra != null" >
+        extra,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="code != null" >
+        #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null" >
+        #{applyTime,jdbcType=BIGINT},
+      </if>
+      <if test="applyUserId != null" >
+        #{applyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowId != null" >
+        #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approvalId != null" >
+        #{approvalId,jdbcType=INTEGER},
+      </if>
+       <if test="extra != null" >
+        #{extra,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.WorkflowApply" >
+    update t_workflow_apply
+    <set >
+      <if test="code != null" >
+        code = #{code,jdbcType=VARCHAR},
+      </if>
+      <if test="applyTime != null" >
+        apply_time = #{applyTime,jdbcType=BIGINT},
+      </if>
+      <if test="applyUserId != null" >
+        apply_user_id = #{applyUserId,jdbcType=INTEGER},
+      </if>
+      <if test="workflowId != null" >
+        workflow_id = #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="approvalId != null" >
+        approval_id = #{approvalId,jdbcType=INTEGER},
+      </if>
+       <if test="extra != null" >
+       extra=#{extra,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.WorkflowApply" >
+    update t_workflow_apply
+    set code = #{code,jdbcType=VARCHAR},
+      apply_time = #{applyTime,jdbcType=BIGINT},
+      apply_user_id = #{applyUserId,jdbcType=INTEGER},
+      workflow_id = #{workflowId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      approval_id = #{approvalId,jdbcType=INTEGER},
+      extra=#{extra,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+   <select id="getyApplyCode" resultMap="BaseResultMap" parameterType="java.lang.String" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_apply
+    where code = #{code,jdbcType=VARCHAR}
+  </select>
+   <select id="getApplyInfoByUserId" resultType="com.hkkj.oa.dto.WorkflowApplyInfoDto" parameterType="com.hkkj.oa.dto.WorkflowApplyInfoDto" >
+	   SELECT 
+		  a.code workflowCode,
+		  a.name workflowName,
+		  b.code applyCode,
+		  b.status,
+		  b.apply_time applyTime,
+		  b.extra 
+		FROM
+		  t_workflow a,
+		  t_workflow_apply b 
+		WHERE a.id = b.workflow_id  and b.apply_user_id = #{userId,jdbcType=INTEGER}
+		 <if test="status != null" >
+         and  b.status = #{status,jdbcType=INTEGER}
+      </if>
+  </select>
+   <select id="getyApplyCountByWorkflowId" resultType="java.lang.Integer" parameterType="java.lang.Long" >
+	 select ifnull(count(id),0) total from t_workflow_apply where status=0 and workflow_id =  #{iworkflowId,jdbcType=BIGINT} 
+  </select>
+</mapper>

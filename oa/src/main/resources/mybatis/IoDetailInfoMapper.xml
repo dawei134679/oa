@@ -1,0 +1,253 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.IoDetailInfoMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.IoDetailInfo" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="TINYINT" />
+    <result column="transport_type" property="transportType" jdbcType="TINYINT" />
+    <result column="tansport_name" property="tansportName" jdbcType="VARCHAR" />
+    <result column="tansport_no" property="tansportNo" jdbcType="VARCHAR" />
+    <result column="transport_code" property="transportCode" jdbcType="VARCHAR" />
+    <result column="contract_code" property="contractCode" jdbcType="VARCHAR" />
+    <result column="bill_code" property="billCode" jdbcType="VARCHAR" />
+    <result column="provider" property="provider" jdbcType="VARCHAR" />
+    <result column="responsible_man" property="responsibleMan" jdbcType="VARCHAR" />
+    <result column="operator" property="operator" jdbcType="VARCHAR" />
+    <result column="operate_time" property="operateTime" jdbcType="INTEGER" />
+    <result column="d_transport_no" property="dTransportNo" jdbcType="VARCHAR" />
+    <result column="wtype_name" property="wtypeName" jdbcType="VARCHAR" />
+    <result column="wtype_code" property="wtypeCode" jdbcType="VARCHAR" />
+    <result column="detail_order" property="detailOrder" jdbcType="VARCHAR" />
+    <result column="no_status" property="noStatus" jdbcType="TINYINT" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, type, transport_type, tansport_name, tansport_no, transport_code, contract_code, 
+    bill_code, provider, responsible_man, operator, operate_time, d_transport_no, wtype_name, 
+    wtype_code, detail_order, no_status
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from in_out_detail
+    where id = #{id,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from in_out_detail
+    where id = #{id,jdbcType=INTEGER}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.IoDetailInfo" >
+    insert into in_out_detail (id, type, transport_type, 
+      tansport_name, tansport_no, transport_code, 
+      contract_code, bill_code, provider, 
+      responsible_man, operator, operate_time, 
+      d_transport_no, wtype_name, wtype_code, 
+      detail_order, no_status)
+    values (#{id,jdbcType=INTEGER}, #{type,jdbcType=TINYINT}, #{transportType,jdbcType=TINYINT}, 
+      #{tansportName,jdbcType=VARCHAR}, #{tansportNo,jdbcType=VARCHAR}, #{transportCode,jdbcType=VARCHAR}, 
+      #{contractCode,jdbcType=VARCHAR}, #{billCode,jdbcType=VARCHAR}, #{provider,jdbcType=VARCHAR}, 
+      #{responsibleMan,jdbcType=VARCHAR}, #{operator,jdbcType=VARCHAR}, #{operateTime,jdbcType=INTEGER}, 
+      #{dTransportNo,jdbcType=VARCHAR}, #{wtypeName,jdbcType=VARCHAR}, #{wtypeCode,jdbcType=VARCHAR}, 
+      #{detailOrder,jdbcType=VARCHAR}, #{noStatus,jdbcType=TINYINT})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.IoDetailInfo" >
+    insert into in_out_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="type != null" >
+        type,
+      </if>
+      <if test="transportType != null" >
+        transport_type,
+      </if>
+      <if test="tansportName != null" >
+        tansport_name,
+      </if>
+      <if test="tansportNo != null" >
+        tansport_no,
+      </if>
+      <if test="transportCode != null" >
+        transport_code,
+      </if>
+      <if test="contractCode != null" >
+        contract_code,
+      </if>
+      <if test="billCode != null" >
+        bill_code,
+      </if>
+      <if test="provider != null" >
+        provider,
+      </if>
+      <if test="responsibleMan != null" >
+        responsible_man,
+      </if>
+      <if test="operator != null" >
+        operator,
+      </if>
+      <if test="operateTime != null" >
+        operate_time,
+      </if>
+      <if test="dTransportNo != null" >
+        d_transport_no,
+      </if>
+      <if test="wtypeName != null" >
+        wtype_name,
+      </if>
+      <if test="wtypeCode != null" >
+        wtype_code,
+      </if>
+      <if test="detailOrder != null" >
+        detail_order,
+      </if>
+      <if test="noStatus != null" >
+        no_status,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=INTEGER},
+      </if>
+      <if test="type != null" >
+        #{type,jdbcType=TINYINT},
+      </if>
+      <if test="transportType != null" >
+        #{transportType,jdbcType=TINYINT},
+      </if>
+      <if test="tansportName != null" >
+        #{tansportName,jdbcType=VARCHAR},
+      </if>
+      <if test="tansportNo != null" >
+        #{tansportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transportCode != null" >
+        #{transportCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contractCode != null" >
+        #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="billCode != null" >
+        #{billCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provider != null" >
+        #{provider,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibleMan != null" >
+        #{responsibleMan,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        #{operateTime,jdbcType=INTEGER},
+      </if>
+      <if test="dTransportNo != null" >
+        #{dTransportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wtypeName != null" >
+        #{wtypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="wtypeCode != null" >
+        #{wtypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailOrder != null" >
+        #{detailOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="noStatus != null" >
+        #{noStatus,jdbcType=TINYINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.IoDetailInfo" >
+    update in_out_detail
+    <set >
+      <if test="type != null" >
+        type = #{type,jdbcType=TINYINT},
+      </if>
+      <if test="transportType != null" >
+        transport_type = #{transportType,jdbcType=TINYINT},
+      </if>
+      <if test="tansportName != null" >
+        tansport_name = #{tansportName,jdbcType=VARCHAR},
+      </if>
+      <if test="tansportNo != null" >
+        tansport_no = #{tansportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="transportCode != null" >
+        transport_code = #{transportCode,jdbcType=VARCHAR},
+      </if>
+      <if test="contractCode != null" >
+        contract_code = #{contractCode,jdbcType=VARCHAR},
+      </if>
+      <if test="billCode != null" >
+        bill_code = #{billCode,jdbcType=VARCHAR},
+      </if>
+      <if test="provider != null" >
+        provider = #{provider,jdbcType=VARCHAR},
+      </if>
+      <if test="responsibleMan != null" >
+        responsible_man = #{responsibleMan,jdbcType=VARCHAR},
+      </if>
+      <if test="operator != null" >
+        operator = #{operator,jdbcType=VARCHAR},
+      </if>
+      <if test="operateTime != null" >
+        operate_time = #{operateTime,jdbcType=INTEGER},
+      </if>
+      <if test="dTransportNo != null" >
+        d_transport_no = #{dTransportNo,jdbcType=VARCHAR},
+      </if>
+      <if test="wtypeName != null" >
+        wtype_name = #{wtypeName,jdbcType=VARCHAR},
+      </if>
+      <if test="wtypeCode != null" >
+        wtype_code = #{wtypeCode,jdbcType=VARCHAR},
+      </if>
+      <if test="detailOrder != null" >
+        detail_order = #{detailOrder,jdbcType=VARCHAR},
+      </if>
+      <if test="noStatus != null" >
+        no_status = #{noStatus,jdbcType=TINYINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.IoDetailInfo" >
+    update in_out_detail
+    set type = #{type,jdbcType=TINYINT},
+      transport_type = #{transportType,jdbcType=TINYINT},
+      tansport_name = #{tansportName,jdbcType=VARCHAR},
+      tansport_no = #{tansportNo,jdbcType=VARCHAR},
+      transport_code = #{transportCode,jdbcType=VARCHAR},
+      contract_code = #{contractCode,jdbcType=VARCHAR},
+      bill_code = #{billCode,jdbcType=VARCHAR},
+      provider = #{provider,jdbcType=VARCHAR},
+      responsible_man = #{responsibleMan,jdbcType=VARCHAR},
+      operator = #{operator,jdbcType=VARCHAR},
+      operate_time = #{operateTime,jdbcType=INTEGER},
+      d_transport_no = #{dTransportNo,jdbcType=VARCHAR},
+      wtype_name = #{wtypeName,jdbcType=VARCHAR},
+      wtype_code = #{wtypeCode,jdbcType=VARCHAR},
+      detail_order = #{detailOrder,jdbcType=VARCHAR},
+      no_status = #{noStatus,jdbcType=TINYINT}
+    where id = #{id,jdbcType=INTEGER}
+  </update>
+  <select id="getIoDetailList" resultMap="BaseResultMap" parameterType="com.hkkj.oa.dto.IoDetailParamDto">
+	select
+	<include refid="Base_Column_List" />
+	from in_out_detail
+	where no_status = 1
+	<!-- <if test="warehouseName!= null and warehouseName!=''">
+		and warehouse_name like concat("%",#{warehouseName},"%")
+	</if> -->
+	<!-- <if test="goodsCode != null and goodsCode!=''">
+		and goods_code like concat("%",#{goodsCode},"%")
+	</if> -->
+	<if test="startTime != null and startTime !=''">
+			<![CDATA[ and operate_time >= #{startTime}]]>
+	</if>
+	<if test="endTime != null and endTime !=''">
+			<![CDATA[ and operate_time <= #{endTime}]]>
+	</if>
+   </select>
+</mapper>

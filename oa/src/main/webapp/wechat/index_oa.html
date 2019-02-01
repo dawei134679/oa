@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>进销存-首页</title>
+<link rel="stylesheet" href="res/css/weui.min.css">
+<link rel="stylesheet" href="res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="res/css/common.css">
+</head>
+<body style="position: absolute;height:100%;width:100%;background: skyblue;">
+	<!-- 页面内容 -->
+	<div id="App" class="doubao-body" v-cloak>
+		<div class="index_oa">
+			<a href="views/myInitiated.html" class="weui-grid js_grid">
+				<div class="weui-grid__icon">
+					<img src="res/img/icon_nav_button.png" alt="" />
+				</div>
+				<p class="weui-grid__label">我发起的</p>
+			</a>
+			<a href="views/myApproved.html" class="weui-grid js_grid">
+				<div class="weui-grid__icon">
+					<img src="res/img/icon_nav_button.png" alt="" />
+				</div>
+				<p class="weui-grid__label">我审批的</p>
+			</a>
+			<a href="views/myAgency.html" class="weui-grid js_grid">
+				<div class="weui-grid__icon">
+					<img src="res/img/icon_nav_button.png" alt="" />
+				</div>
+				<p class="weui-grid__label">待我审批</p>
+			</a>
+			<a href="javascript:;" v-on:click="faqishenqing" class="weui-grid js_grid">
+				<div class="weui-grid__icon">
+					<img src="res/img/icon_nav_button.png" alt="" />
+				</div>
+				<p class="weui-grid__label">发起申请</p>
+			</a>
+			<a href="javascript:;" v-on:click="loginOut" class="weui-grid js_grid">
+				<div class="weui-grid__icon">
+					<img src="res/img/icon_nav_button.png" alt="" />
+				</div>
+				<p class="weui-grid__label">退出登录</p>
+			</a>
+		</div>
+	</div>
+	<!-- 脚本 -->
+	<script src="res/js/jquery.min.js"></script>
+	<script src="res/js/fastclick.min.js"></script>
+	<script src="res/js/jquery.cookie.min.js"></script>
+	<script src="res/js/jquery-weui.min.js"></script>
+	<script src="res/js/swiper.min.js"></script>
+	<script src="res/js/city-picker.min.js"></script>
+	<script src="res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="res/js/vue.dev.js"></script>
+	<script src="res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+			el : '#App',
+			data : {},
+			methods:{
+				faqishenqing(){
+					$.actions({
+						actions: [{
+						    text: "采购流程",
+						    className: "bg-primary",
+						    onClick: function() {
+						      window.location.href="views/initiatedProcurementFlow.html";
+						    }
+						}]
+					});
+				},
+				loginOut(){
+					dou.store("token",'');
+					window.location.reload();
+				}
+			}
+		});
+		$(function(){
+			var str= navigator.userAgent.toLowerCase(); 
+		    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+		    if(!ver){//非IOS系统
+		    	FastClick.attach(document.body);
+		    }else{
+		        if(parseInt(ver[1])<11){
+		        	FastClick.attach(document.body);
+		        }
+		    }
+		  	//检查是否登录
+			dou.checkLogin();
+		});
+	</script>
+</body>
+</html>

@@ -1,0 +1,436 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.UserMapper">
+	<resultMap id="BaseResultMap" type="com.hkkj.oa.entity.User">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="user_code" property="userCode" jdbcType="VARCHAR" />
+		<result column="password" property="password" jdbcType="VARCHAR" />
+		<result column="user_type" property="userType" jdbcType="INTEGER" />
+		<result column="org_id" property="orgId" jdbcType="INTEGER" />
+		<result column="status" property="status" jdbcType="INTEGER" />
+		<result column="user_name" property="userName" jdbcType="VARCHAR" />
+		<result column="english_name" property="englishName" jdbcType="VARCHAR" />
+		<result column="sex" property="sex" jdbcType="INTEGER" />
+		<result column="post" property="post" jdbcType="VARCHAR" />
+		<result column="hiredate" property="hiredate" jdbcType="BIGINT" />
+		<result column="contact_number" property="contactNumber"
+			jdbcType="VARCHAR" />
+		<result column="phone_number" property="phoneNumber" jdbcType="VARCHAR" />
+		<result column="email" property="email" jdbcType="VARCHAR" />
+		<result column="education" property="education" jdbcType="TINYINT" />
+		<result column="birthday" property="birthday" jdbcType="DATE" />
+		<result column="remarks" property="remarks" jdbcType="VARCHAR" />
+		<result column="create_time" property="createTime" jdbcType="BIGINT" />
+		<result column="create_user_id" property="createUserId"
+			jdbcType="INTEGER" />
+		<result column="modify_time" property="modifyTime" jdbcType="BIGINT" />
+		<result column="modify_user_id" property="modifyUserId"
+			jdbcType="INTEGER" />
+	</resultMap>
+	<sql id="Base_Column_List">
+		id, user_code, password, user_type, org_id, status,
+		user_name,
+		english_name, sex,
+		post, hiredate, contact_number,
+		phone_number, email, education, birthday,
+		remarks,
+		create_time,
+		create_user_id, modify_time, modify_user_id
+	</sql>
+	<select id="selectByPrimaryKey" resultMap="BaseResultMap"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from s_user
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+	<delete id="deleteByPrimaryKey" parameterType="java.lang.Integer">
+		delete from s_user
+		where id = #{id,jdbcType=INTEGER}
+	</delete>
+	<insert id="insert" parameterType="com.hkkj.oa.entity.User">
+		insert into s_user (id,
+		user_code, password,
+		user_type, org_id, status, user_name,
+		english_name, sex, post,
+		hiredate, contact_number, phone_number,
+		email,
+		education, birthday,
+		remarks, create_time, create_user_id,
+		modify_time,
+		modify_user_id)
+		values (#{id,jdbcType=INTEGER},
+		#{userCode,jdbcType=VARCHAR},
+		#{password,jdbcType=VARCHAR},
+		#{userType,jdbcType=INTEGER}, #{orgId,jdbcType=INTEGER},
+		#{status,jdbcType=INTEGER},
+		#{userName,jdbcType=VARCHAR},
+		#{englishName,jdbcType=VARCHAR}, #{sex,jdbcType=INTEGER},
+		#{post,jdbcType=VARCHAR},
+		#{hiredate,jdbcType=BIGINT},
+		#{contactNumber,jdbcType=VARCHAR},
+		#{phoneNumber,jdbcType=VARCHAR},
+		#{email,jdbcType=VARCHAR}, #{education,jdbcType=TINYINT},
+		#{birthday,jdbcType=DATE},
+		#{remarks,jdbcType=VARCHAR},
+		#{createTime,jdbcType=BIGINT},
+		#{createUserId,jdbcType=INTEGER},
+		#{modifyTime,jdbcType=BIGINT}, #{modifyUserId,jdbcType=INTEGER})
+	</insert>
+	<insert id="insertSelective" parameterType="com.hkkj.oa.entity.User">
+		insert into s_user
+		<trim prefix="(" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				id,
+			</if>
+			<if test="userCode != null">
+				user_code,
+			</if>
+			<if test="password != null">
+				password,
+			</if>
+			<if test="userType != null">
+				user_type,
+			</if>
+			<if test="orgId != null">
+				org_id,
+			</if>
+			<if test="status != null">
+				status,
+			</if>
+			<if test="userName != null">
+				user_name,
+			</if>
+			<if test="englishName != null">
+				english_name,
+			</if>
+			<if test="sex != null">
+				sex,
+			</if>
+			<if test="post != null">
+				post,
+			</if>
+			<if test="hiredate != null">
+				hiredate,
+			</if>
+			<if test="contactNumber != null">
+				contact_number,
+			</if>
+			<if test="phoneNumber != null">
+				phone_number,
+			</if>
+			<if test="email != null">
+				email,
+			</if>
+			<if test="education != null">
+				education,
+			</if>
+			<if test="birthday != null">
+				birthday,
+			</if>
+			<if test="remarks != null">
+				remarks,
+			</if>
+			<if test="createTime != null">
+				create_time,
+			</if>
+			<if test="createUserId != null">
+				create_user_id,
+			</if>
+			<if test="modifyTime != null">
+				modify_time,
+			</if>
+			<if test="modifyUserId != null">
+				modify_user_id,
+			</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides=",">
+			<if test="id != null">
+				#{id,jdbcType=INTEGER},
+			</if>
+			<if test="userCode != null">
+				#{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				#{password,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				#{userType,jdbcType=INTEGER},
+			</if>
+			<if test="orgId != null">
+				#{orgId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				#{status,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				#{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="englishName != null">
+				#{englishName,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				#{sex,jdbcType=INTEGER},
+			</if>
+			<if test="post != null">
+				#{post,jdbcType=VARCHAR},
+			</if>
+			<if test="hiredate != null">
+				#{hiredate,jdbcType=BIGINT},
+			</if>
+			<if test="contactNumber != null">
+				#{contactNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNumber != null">
+				#{phoneNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				#{email,jdbcType=VARCHAR},
+			</if>
+			<if test="education != null">
+				#{education,jdbcType=TINYINT},
+			</if>
+			<if test="birthday != null">
+				#{birthday,jdbcType=DATE},
+			</if>
+			<if test="remarks != null">
+				#{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				#{createTime,jdbcType=BIGINT},
+			</if>
+			<if test="createUserId != null">
+				#{createUserId,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				#{modifyTime,jdbcType=BIGINT},
+			</if>
+			<if test="modifyUserId != null">
+				#{modifyUserId,jdbcType=INTEGER},
+			</if>
+		</trim>
+	</insert>
+	<update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.User">
+		update s_user
+		<set>
+			<if test="userCode != null">
+				user_code = #{userCode,jdbcType=VARCHAR},
+			</if>
+			<if test="password != null">
+				password = #{password,jdbcType=VARCHAR},
+			</if>
+			<if test="userType != null">
+				user_type = #{userType,jdbcType=INTEGER},
+			</if>
+			<if test="orgId != null">
+				org_id = #{orgId,jdbcType=INTEGER},
+			</if>
+			<if test="status != null">
+				status = #{status,jdbcType=INTEGER},
+			</if>
+			<if test="userName != null">
+				user_name = #{userName,jdbcType=VARCHAR},
+			</if>
+			<if test="englishName != null">
+				english_name = #{englishName,jdbcType=VARCHAR},
+			</if>
+			<if test="sex != null">
+				sex = #{sex,jdbcType=INTEGER},
+			</if>
+			<if test="post != null">
+				post = #{post,jdbcType=VARCHAR},
+			</if>
+			<if test="hiredate != null">
+				hiredate = #{hiredate,jdbcType=BIGINT},
+			</if>
+			<if test="contactNumber != null">
+				contact_number = #{contactNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="phoneNumber != null">
+				phone_number = #{phoneNumber,jdbcType=VARCHAR},
+			</if>
+			<if test="email != null">
+				email = #{email,jdbcType=VARCHAR},
+			</if>
+			<if test="education != null">
+				education = #{education,jdbcType=TINYINT},
+			</if>
+			<if test="birthday != null">
+				birthday = #{birthday,jdbcType=DATE},
+			</if>
+			<if test="remarks != null">
+				remarks = #{remarks,jdbcType=VARCHAR},
+			</if>
+			<if test="createTime != null">
+				create_time = #{createTime,jdbcType=BIGINT},
+			</if>
+			<if test="createUserId != null">
+				create_user_id = #{createUserId,jdbcType=INTEGER},
+			</if>
+			<if test="modifyTime != null">
+				modify_time = #{modifyTime,jdbcType=BIGINT},
+			</if>
+			<if test="modifyUserId != null">
+				modify_user_id = #{modifyUserId,jdbcType=INTEGER},
+			</if>
+		</set>
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	<update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.User">
+		update s_user
+		set
+		user_code = #{userCode,jdbcType=VARCHAR},
+		password =
+		#{password,jdbcType=VARCHAR},
+		user_type = #{userType,jdbcType=INTEGER},
+		org_id = #{orgId,jdbcType=INTEGER},
+		status =
+		#{status,jdbcType=INTEGER},
+		user_name = #{userName,jdbcType=VARCHAR},
+		english_name = #{englishName,jdbcType=VARCHAR},
+		sex =
+		#{sex,jdbcType=INTEGER},
+		post = #{post,jdbcType=VARCHAR},
+		hiredate =
+		#{hiredate,jdbcType=BIGINT},
+		contact_number =
+		#{contactNumber,jdbcType=VARCHAR},
+		phone_number =
+		#{phoneNumber,jdbcType=VARCHAR},
+		email = #{email,jdbcType=VARCHAR},
+		education = #{education,jdbcType=TINYINT},
+		birthday =
+		#{birthday,jdbcType=DATE},
+		remarks = #{remarks,jdbcType=VARCHAR},
+		create_time = #{createTime,jdbcType=BIGINT},
+		create_user_id =
+		#{createUserId,jdbcType=INTEGER},
+		modify_time =
+		#{modifyTime,jdbcType=BIGINT},
+		modify_user_id =
+		#{modifyUserId,jdbcType=INTEGER}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+
+	<select id="getUserByUserCode" resultMap="BaseResultMap"
+		parameterType="java.lang.String">
+		select
+		<include refid="Base_Column_List" />
+		from s_user
+		where status = 1 and user_code=#{userCode}
+	</select>
+
+	<select id="getUserInfoByUserCode" resultType="com.hkkj.oa.dto.UserInfoDto"
+		parameterType="java.lang.String">
+		SELECT
+		u.id,
+		u.user_code userCode,
+		u.user_type userType,
+		u.user_name userName,
+		u.english_name englishName,
+		sex,
+		post,
+		hiredate,
+		u.contact_number contactNumber,
+		email,
+		education,
+		birthday,
+		u.remarks,
+		u.org_id orgId,
+		o.org_name orgName,
+		o.org_code orgCode,
+		o.org_type
+		orgType,
+		o.parent_id parentId,
+		o.parent_code parentCode,
+		o.remarks
+		orgRemarks
+		FROM
+		s_user u LEFT JOIN s_organization o ON u.org_id = o.id
+		AND o.status = 1
+		WHERE u.status = 1 and user_code=#{userCode}
+	</select>
+	<select id="getUserInfoList" resultType="com.hkkj.oa.dto.UserInfoDto"
+		parameterType="com.hkkj.oa.dto.UserParamDto">
+		SELECT
+		u.id,
+		u.user_code userCode,
+		u.user_type userType,
+		u.user_name
+		userName,
+		u.english_name englishName,
+		sex,
+		post,
+		hiredate,
+		u.contact_number contactNumber,
+		u.phone_number phoneNumber,
+		email,
+		education,
+		birthday,
+		u.remarks,
+		u.org_id orgId,
+		o.org_name orgName,
+		o.org_code orgCode,
+		o.org_type orgType,
+		o.parent_id parentId,
+		o.parent_code parentCode,
+		o.remarks orgRemarks
+		FROM
+		s_user u LEFT JOIN
+		s_organization o ON u.org_id = o.id AND o.status = 1
+		WHERE u.status = 1
+		<if test="userCode != null and userCode!=''">
+			and user_code like concat("%",#{userCode},"%")
+		</if>
+		<if test="userName != null and userName!=''">
+			and user_name like concat("%",#{userName},"%")
+		</if>
+	</select>
+
+	<update id="delUserInfoByIds">
+		update s_user
+		<set>
+			status = 0,
+			<if test="record.modifyTime != null">
+				modify_time = #{record.modifyTime,jdbcType=BIGINT},
+			</if>
+			<if test="record.modifyUserId != null">
+				modify_user_id = #{record.modifyUserId,jdbcType=INTEGER}
+			</if>
+		</set>
+		where id in
+		<foreach item="item" index="index" collection="ids" open="("
+			separator="," close=")">
+			#{item}
+		</foreach>
+	</update>
+	<select id="getUserInfoPageByOrgId" resultType="com.hkkj.oa.dto.UserTreeNodeDto"
+		parameterType="com.hkkj.oa.dto.UserParamDto">
+		SELECT
+			id uid,
+			user_code userCode,
+			user_name userName
+		FROM
+			s_user
+		WHERE status = 1
+			<if test="orgId != null">
+				and org_id=#{orgId}
+			</if>
+	</select>
+	<select id="getALlUserInfoList" resultType="com.hkkj.oa.dto.UserTreeNodeDto">
+		SELECT
+			id uid,
+			user_code userCode,
+			user_name userName
+		FROM
+			s_user
+		WHERE status = 1
+	</select>
+	
+	<select id="getUserById" resultMap="BaseResultMap" parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		from s_user
+		where status = 1 and id = #{id,jdbcType=INTEGER}
+	</select>
+</mapper>

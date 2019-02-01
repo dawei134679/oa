@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.PurchaseDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.PurchaseDetail" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="purchase_id" property="purchaseId" jdbcType="BIGINT" />
+    <result column="name" property="name" jdbcType="VARCHAR" />
+    <result column="specifications" property="specifications" jdbcType="VARCHAR" />
+    <result column="num" property="num" jdbcType="DOUBLE" />
+    <result column="unit" property="unit" jdbcType="VARCHAR" />
+    <result column="price" property="price" jdbcType="DECIMAL" />
+    <result column="description" property="description" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, purchase_id, name, specifications, num, unit, price, description
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_purchase_detail
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  
+  <!-- 根据采购流程ID查询采购明细列表 -->
+  <select id="listDetailByPurchaseId" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_purchase_detail
+    where purchase_id = #{purchaseId,jdbcType=BIGINT}
+  </select>
+  
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_purchase_detail
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.PurchaseDetail" >
+    insert into t_purchase_detail (id, purchase_id, name, 
+      specifications, num, unit, 
+      price, description)
+    values (#{id,jdbcType=BIGINT}, #{purchaseId,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, 
+      #{specifications,jdbcType=VARCHAR}, #{num,jdbcType=DOUBLE}, #{unit,jdbcType=VARCHAR}, 
+      #{price,jdbcType=DECIMAL}, #{description,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.PurchaseDetail" >
+    insert into t_purchase_detail
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="purchaseId != null" >
+        purchase_id,
+      </if>
+      <if test="name != null" >
+        name,
+      </if>
+      <if test="specifications != null" >
+        specifications,
+      </if>
+      <if test="num != null" >
+        num,
+      </if>
+      <if test="unit != null" >
+        unit,
+      </if>
+      <if test="price != null" >
+        price,
+      </if>
+      <if test="description != null" >
+        description,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="purchaseId != null" >
+        #{purchaseId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="specifications != null" >
+        #{specifications,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="unit != null" >
+        #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        #{description,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.PurchaseDetail" >
+    update t_purchase_detail
+    <set >
+      <if test="purchaseId != null" >
+        purchase_id = #{purchaseId,jdbcType=BIGINT},
+      </if>
+      <if test="name != null" >
+        name = #{name,jdbcType=VARCHAR},
+      </if>
+      <if test="specifications != null" >
+        specifications = #{specifications,jdbcType=VARCHAR},
+      </if>
+      <if test="num != null" >
+        num = #{num,jdbcType=DOUBLE},
+      </if>
+      <if test="unit != null" >
+        unit = #{unit,jdbcType=VARCHAR},
+      </if>
+      <if test="price != null" >
+        price = #{price,jdbcType=DECIMAL},
+      </if>
+      <if test="description != null" >
+        description = #{description,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.PurchaseDetail" >
+    update t_purchase_detail
+    set purchase_id = #{purchaseId,jdbcType=BIGINT},
+      name = #{name,jdbcType=VARCHAR},
+      specifications = #{specifications,jdbcType=VARCHAR},
+      num = #{num,jdbcType=DOUBLE},
+      unit = #{unit,jdbcType=VARCHAR},
+      price = #{price,jdbcType=DECIMAL},
+      description = #{description,jdbcType=VARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>进销存-仓库管理</title>
+<link rel="stylesheet" href="../res/css/weui.min.css">
+<link rel="stylesheet" href="../res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="../res/css/common.css">
+</head>
+<body>
+	<!-- 页面内容 -->
+	<div id="App" class="doubao-body" v-cloak>
+		<!-- 头部 -->
+		<div class="doubao-header">
+			<div class="left_warp">
+				<a href="javascript:window.location.href='../index_inventory.html';"><span>&lt;返回</span></a>
+			</div>
+			<div class="center_warp">
+				<span>仓库管理</span>
+			</div>
+			<div class="right_warp">
+			</div>
+		</div>
+		<!-- 内容 -->
+		<div class="doubao-content">
+			<div class="weui-cells weui-cells_form">
+
+				<div class="weui-cell" v-for="(item, index) in datalist" v-on:click="handleTap(item)">
+					<div class="item-warp">
+						<div>仓库名称：{{item.name}}</div>
+						<div>仓库剩余容量：{{item.capacity}}</div>
+					</div>
+				</div>
+			  
+			</div><!-- end form -->
+			
+		</div>
+		<!-- 底部 -->
+		<!-- 
+		<div class="doubao-bottom-fixed" style="text-align:center;">
+			<span v-on:click="prePage" v-if="pageNo>1">上一页</span>
+			<span>【{{pageNo}}/{{pageCount}}】</span>
+			<span v-on:click="nextPage" v-if="pageNo<pageCount">下一页</span>
+	  	</div>
+		 -->
+	  	
+	</div>
+	<!-- 脚本 -->
+	<script src="../res/js/jquery.min.js"></script>
+	<script src="../res/js/fastclick.min.js"></script>
+	<script src="../res/js/jquery.cookie.min.js"></script>
+	<script src="../res/js/jquery-weui.min.js"></script>
+	<script src="../res/js/swiper.min.js"></script>
+	<script src="../res/js/city-picker.min.js"></script>
+	<script src="../res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="../res/js/vue.dev.js"></script>
+	<script src="../res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+				el : '#App',
+				data : {
+					datalist:[]
+				},
+				mounted:function(){
+					setTimeout(this.init,1000);
+				},
+				methods:{
+					init(){
+						this.loadData(0);
+					},
+					loadData(p){
+						var data = {};
+						//data.page = app.pageNo+p;
+						dou.ajax({
+							url : "/front/chManager/getCwarehouseCapacityById",
+							data:data,
+							success:function(d){
+								if(d.code == '200'){
+									app.datalist = d.data;
+									//app.pageCount = d.data.pages;
+									//app.pageNo = d.data.pageNum;
+								}
+							}
+						});
+					},
+					formatDate(d,fmt){
+						return dou.formatDate(d,fmt);
+					},
+					prePage(){
+						this.loadData(-1);
+					},
+					nextPage(){
+						this.loadData(1);
+					},
+					handleTap(item){
+				        window.location.href='warehouseEdit.html?id='+item.id+"&capacity="+encodeURI(encodeURI(item.capacity));
+					}
+				}
+			});
+			
+			$(function() {
+				var str= navigator.userAgent.toLowerCase(); 
+			    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+			    if(!ver){//非IOS系统
+			    	FastClick.attach(document.body);
+			    }else{
+			        if(parseInt(ver[1])<11){
+			        	FastClick.attach(document.body);
+			        }
+			    }
+			});//end 初始化加载
+	</script>
+</body>
+</html>

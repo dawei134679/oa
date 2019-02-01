@@ -1,0 +1,174 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.WorkflowApprovalMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.WorkflowApproval" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="workflow_id" property="workflowId" jdbcType="BIGINT" />
+    <result column="workflow_apply_id_id" property="workflowApplyIdId" jdbcType="BIGINT" />
+    <result column="status" property="status" jdbcType="INTEGER" />
+    <result column="remarks" property="remarks" jdbcType="VARCHAR" />
+    <result column="approval_time" property="approvalTime" jdbcType="BIGINT" />
+    <result column="approval_user_id" property="approvalUserId" jdbcType="INTEGER" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, workflow_id, workflow_apply_id, status, remarks, approval_time, approval_user_id
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_approval
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from t_workflow_approval
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.WorkflowApproval" >
+    insert into t_workflow_approval (id, workflow_id, workflow_apply_id, 
+      status, remarks, approval_time, 
+      approval_user_id)
+    values (#{id,jdbcType=BIGINT}, #{workflowId,jdbcType=BIGINT}, #{workflowApplyId,jdbcType=BIGINT}, 
+      #{status,jdbcType=INTEGER}, #{remarks,jdbcType=VARCHAR}, #{approvalTime,jdbcType=BIGINT}, 
+      #{approvalUserId,jdbcType=INTEGER})
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.WorkflowApproval" >
+    insert into t_workflow_approval
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="workflowId != null" >
+        workflow_id,
+      </if>
+      <if test="workflowApplyId != null" >
+        workflow_apply_id,
+      </if>
+      <if test="status != null" >
+        status,
+      </if>
+      <if test="remarks != null" >
+        remarks,
+      </if>
+      <if test="approvalTime != null" >
+        approval_time,
+      </if>
+      <if test="approvalUserId != null" >
+        approval_user_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="workflowId != null" >
+        #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="workflowApplyId != null" >
+        #{workflowApplyId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null" >
+        #{approvalTime,jdbcType=BIGINT},
+      </if>
+      <if test="approvalUserId != null" >
+        #{approvalUserId,jdbcType=INTEGER},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.WorkflowApproval" >
+    update t_workflow_approval
+    <set >
+      <if test="workflowId != null" >
+        workflow_id = #{workflowId,jdbcType=BIGINT},
+      </if>
+      <if test="workflowApplyId != null" >
+        workflow_apply_id = #{workflowApplyId,jdbcType=BIGINT},
+      </if>
+      <if test="status != null" >
+        status = #{status,jdbcType=INTEGER},
+      </if>
+      <if test="remarks != null" >
+        remarks = #{remarks,jdbcType=VARCHAR},
+      </if>
+      <if test="approvalTime != null" >
+        approval_time = #{approvalTime,jdbcType=BIGINT},
+      </if>
+      <if test="approvalUserId != null" >
+        approval_user_id = #{approvalUserId,jdbcType=INTEGER},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.WorkflowApproval" >
+    update t_workflow_approval
+    set workflow_id = #{workflowId,jdbcType=BIGINT},
+      workflow_apply_id = #{workflowApplyId,jdbcType=BIGINT},
+      status = #{status,jdbcType=INTEGER},
+      remarks = #{remarks,jdbcType=VARCHAR},
+      approval_time = #{approvalTime,jdbcType=BIGINT},
+      approval_user_id = #{approvalUserId,jdbcType=INTEGER}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <select id="getProcessedTasksByUserId" resultType="com.hkkj.oa.dto.ProcessedTasksDto" parameterType="com.hkkj.oa.dto.ProcessedTasksParamDto" >
+    SELECT 
+	  a.code workflowCode,
+	  a.name workflowName,
+	  b.code applyCode,
+	  b.apply_time applyTime,
+	  b.extra
+	FROM
+	  t_workflow a,
+	  t_workflow_apply b,
+	  t_workflow_approval c 
+	WHERE a.id = c.workflow_id AND b.id=c.workflow_apply_id
+	  AND c.status=0 and c.approval_user_id = #{userId,jdbcType=INTEGER}
+  </select>
+   <select id="getHaveDoneTaskByUserId" resultType="com.hkkj.oa.dto.HaveDoneTaskDto" parameterType="com.hkkj.oa.dto.HaveDoneTaskParamDto" >
+    SELECT 
+	  a.code workflowCode,
+	  a.name workflowName,
+	  b.code applyCode,
+	  b.apply_time applyTime,
+	  b.extra,
+	  c.status,
+	  c.remarks,
+      c.approval_time approvalTime
+	FROM
+	  t_workflow a,
+	  t_workflow_apply b,
+	  t_workflow_approval c 
+	WHERE a.id = c.workflow_id 
+	  AND c.status!=0 AND b.id=c.workflow_apply_id and  c.approval_user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  
+   <select id="getWorkflowApproval" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from t_workflow_approval
+    where approval_user_id = #{approvalUserId,jdbcType=INTEGER} and  workflow_apply_id = #{workflowApplyId,jdbcType=BIGINT}
+  </select>
+   <select id="getWorkflowApprovalRecord" resultType="com.hkkj.oa.dto.ApprovalRecordDto" parameterType="java.lang.String">
+		SELECT 
+		   b.approval_user_id approvalUserId,
+		   e.user_code approvalUserCode,
+		   e.user_name approvalUserName,
+		   f.id approvalOrgId,
+		   f.org_code approvalOrgCode,
+		   f.org_name approvalOrgName,
+		   b.approval_time approvalTime,
+		   b.status approvalStatus,
+		   b.remarks approvalRemarks
+		FROM
+		  t_workflow_apply a    
+		  LEFT JOIN t_workflow_approval b   ON a.id = b.workflow_apply_id
+		  LEFT JOIN s_user c ON a.apply_user_id=c.id LEFT JOIN s_organization d ON c.org_id=d.id
+		  LEFT JOIN s_user e ON b.approval_user_id=e.id LEFT JOIN s_organization f ON e.org_id=f.id 
+		  where a.code=#{applyCode,jdbcType=VARCHAR}
+		  ORDER BY b.id ASC
+  </select>
+</mapper>

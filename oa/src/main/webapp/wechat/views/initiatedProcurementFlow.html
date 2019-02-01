@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport"
+	content="width=device-width,user-scalable=no,initial-scale=1,viewport-fit=cover">
+<meta name="format-detection" content="telephone=no, email=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>进销存-发起采购流程</title>
+<link rel="stylesheet" href="../res/css/weui.min.css">
+<link rel="stylesheet" href="../res/css/jquery-weui.min.css">
+<link rel="stylesheet" href="../res/css/common.css">
+</head>
+<body>
+	<!-- 页面内容 -->
+	<div id="App" class="doubao-body" v-cloak>
+		<!-- 头部 -->
+		<div class="doubao-header">
+			<div class="left_warp">
+				<a href="javascript:window.history.back();"><span>&lt;返回</span></a>
+			</div>
+			<div class="center_warp">
+				<span>发起采购流程</span>
+			</div>
+			<div class="right_warp">
+			</div>
+		</div>
+		<!-- 内容 -->
+		<div class="doubao-content" style="padding-bottom:50px;">
+			<div class="weui-cells weui-cells_form">
+			  
+		      <div class="weui-cell">
+			    <div class="weui-cell__hd"><label class="weui-label">标题</label></div>
+			    <div class="weui-cell__bd">
+			      <input class="weui-input" type="text" v-model="info.title" placeholder="请输入标题">
+			    </div>
+			  </div>
+			  
+			  <div class="weui-cells__title">备注</div>
+				<div class="weui-cells weui-cells_form">
+				  <div class="weui-cell">
+				    <div class="weui-cell__bd">
+				      <textarea class="weui-textarea" placeholder="请输入备注" rows="3" v-model="info.remark" ></textarea>
+				    <div class="weui-textarea-counter"><span>0</span>/200</div>
+				  </div>
+				</div>
+			  </div>
+				
+			  <div class="weui-cells__title">采购流程明细</div>
+			  
+		  	  <div class="weui-cells__title">
+		  		<a href="javascript:app.addDetail();" class="weui-btn weui-btn_plain-primary">添加采购流程明细</a>
+		  	  </div>
+		  	  
+		  	  <div class="weui-cells">
+  					<div class="weui-cell" v-for="(item, index) in subDetails">
+						<div class="item-warp">
+							<div>名称：{{item.name}}</div>
+							<div>
+								<div class="half">规格：{{item.specifications}}</div>
+								<div class="half">数量：{{item.num}}</div>
+							</div>
+							<div>
+								<div class="half">单位：{{item.unit}}</div>
+								<div class="half">价格：{{item.price}}</div>
+							</div>
+							<div>说明：{{item.description}}</div>
+							<div>
+								<div class="half">
+									<a href="javascript:;" v-on:click="delDetails(index)" class="del">删除</a>
+								</div>
+							</div>
+						</div>
+  				</div>
+		  	  </div>
+			  
+			  <div id="addRuKuDetail" class="weui-popup__container">
+				<div class="weui-popup__overlay"></div>
+				<div class="weui-popup__modal">
+					<!-- 添加详情页面头部 -->
+					<div class="doubao-header">
+						<div class="left_warp">
+							<a href="javascript:$.closePopup();"><span>&lt;取消</span></a>
+						</div>
+						<div class="center_warp">
+							<span>采购流程</span>
+						</div>
+						<div class="right_warp">
+							<a href="javascript:app.saveDetail();"><span>√保存</span></a>
+						</div>
+					</div>			
+					<!-- 添加详情页内容 -->
+				    <div class="weui-cell">
+					    <div class="weui-cell__hd"><label class="weui-label">名称</label></div>
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="text" v-model="item.name" placeholder="请输入名称">
+					    </div>
+					</div>
+
+				    <div class="weui-cell">
+					    <div class="weui-cell__hd"><label class="weui-label">规格</label></div>
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="text" v-model="item.specifications" placeholder="请输入规格">
+					    </div>
+					</div>
+
+				    <div class="weui-cell">
+					    <div class="weui-cell__hd"><label class="weui-label">数量</label></div>
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="number" v-model="item.num" placeholder="请输入数量">
+					    </div>
+					</div>
+					
+				    <div class="weui-cell">
+					    <div class="weui-cell__hd"><label class="weui-label">单位</label></div>
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="text" v-model="item.unit" placeholder="请输入单位">
+					    </div>
+					</div>
+					
+					<div class="weui-cell">
+					    <div class="weui-cell__hd"><label class="weui-label">价格</label></div>
+					    <div class="weui-cell__bd">
+					      <input class="weui-input" type="number" v-model="item.price" placeholder="请输入价格">
+					    </div>
+					</div>
+					
+					<div class="weui-cells__title">说&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;明</div>
+					<div class="weui-cells weui-cells_form">
+					  <div class="weui-cell">
+					    <div class="weui-cell__bd">
+					      <textarea class="weui-textarea" placeholder="请输入说明" rows="3" v-model="item.description" ></textarea>
+					      <div class="weui-textarea-counter"><span>0</span>/200</div>
+					    </div>
+					  </div>
+					</div>
+					
+				</div>
+			  </div>
+			  
+			  
+			</div><!-- end form -->
+			
+		</div>
+		<!-- 底部 -->
+		<div class="doubao-bottom-fixed">
+			<div class="leftMenu">
+
+			</div>
+			<div class="rightMenu" v-on:click="saveInfo">
+				提交
+			</div>
+	  	</div>
+		
+	</div>
+	<!-- 脚本 -->
+	<script src="../res/js/jquery.min.js"></script>
+	<script src="../res/js/fastclick.min.js"></script>
+	<script src="../res/js/jquery.cookie.min.js"></script>
+	<script src="../res/js/jquery-weui.min.js"></script>
+	<script src="../res/js/swiper.min.js"></script>
+	<script src="../res/js/city-picker.min.js"></script>
+	<script src="../res/js/md5.js"></script>
+	<!-- 开发环境 dev 生产环境 prod -->
+	<script src="../res/js/vue.dev.js"></script>
+	<script src="../res/js/common.js"></script>
+	<script type="text/javascript">
+		var app = new Vue({
+				el : '#App',
+				data : {
+					subDetails:[],
+					info: {
+						title: "",
+						remark: ""
+					},
+					item: {
+						name: "",
+						specifications: '',
+						num: '',
+						unit: '',
+						price: "",
+		                description: ""
+					}
+				},
+				mounted:function(){
+					setTimeout(this.init,1000);
+				},
+				methods:{
+					init(){
+					},
+					saveInfo(){
+						var cloneInfo = Object.assign({}, app.info);
+						for(var key in cloneInfo){
+							if(cloneInfo[key].length  == 0){
+								$.toast("请全部输入!", "text");
+								return false;
+							}
+						}
+						if(app.subDetails.length == 0){
+							$.toast("请填写采购流程明细!", "text");
+							return false;
+						}
+						dou.ajax({
+							url : "/front/purchase/initiationPurchaseProcess",
+							data:{
+								"purchaseStr":JSON.stringify(cloneInfo),
+			                    "subDetails":JSON.stringify(app.subDetails)
+							},
+							success:function(d){
+								if(d.code == '200'){
+									$.toast(d.msg, "success", function() {
+										window.history.back();
+									});
+								}else{
+									$.toptip(d.msg, 'error');
+								}
+							}
+						});
+					},
+					clearItemDetail(){
+						app.item.name = "";
+						app.item.specifications = "";
+						app.item.num = "";
+						app.item.unit = "";
+						app.item.price = "";
+						app.item.description = "";
+					},
+					addDetail(){
+						$('#addRuKuDetail').popup();
+					},
+					saveDetail(){//保存单个明细信息;
+						var cloneItem = Object.assign({}, app.item)
+						for(var key in cloneItem){
+							if(cloneItem[key].length  == 0){
+								$.toast("请全部输入!", "text");
+								return false;
+							}
+						}
+						app.subDetails.push(cloneItem);
+						app.clearItemDetail();
+						$.closePopup();
+					},
+					delDetails(idx) {
+						this.subDetails.splice(idx, 1);
+					}
+				}
+			});
+			
+			$(function() {
+				var str= navigator.userAgent.toLowerCase(); 
+			    var ver=str.match(/cpu iphone os (.*?) like mac os/);
+			    if(!ver){//非IOS系统
+			    	FastClick.attach(document.body);
+			    }else{
+			        if(parseInt(ver[1])<11){
+			        	FastClick.attach(document.body);
+			        }
+			    }
+			});//end 初始化加载
+	</script>
+</body>
+</html>

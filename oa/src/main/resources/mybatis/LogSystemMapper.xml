@@ -1,0 +1,275 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.hkkj.oa.dao.LogSystemMapper" >
+  <resultMap id="BaseResultMap" type="com.hkkj.oa.entity.LogSystem" >
+    <id column="id" property="id" jdbcType="BIGINT" />
+    <result column="module" property="module" jdbcType="VARCHAR" />
+    <result column="remark" property="remark" jdbcType="VARCHAR" />
+    <result column="client_ip" property="clientIp" jdbcType="INTEGER" />
+    <result column="call_class" property="callClass" jdbcType="VARCHAR" />
+    <result column="call_method" property="callMethod" jdbcType="VARCHAR" />
+    <result column="call_type" property="callType" jdbcType="INTEGER" />
+    <result column="web_full_path" property="webFullPath" jdbcType="VARCHAR" />
+    <result column="web_method" property="webMethod" jdbcType="VARCHAR" />
+    <result column="web_client_name" property="webClientName" jdbcType="VARCHAR" />
+    <result column="web_client_browser" property="webClientBrowser" jdbcType="VARCHAR" />
+    <result column="web_client_browser_version" property="webClientBrowserVersion" jdbcType="VARCHAR" />
+    <result column="web_client_os" property="webClientOs" jdbcType="VARCHAR" />
+    <result column="begin_time" property="beginTime" jdbcType="BIGINT" />
+    <result column="end_time" property="endTime" jdbcType="BIGINT" />
+    <result column="use_time" property="useTime" jdbcType="INTEGER" />
+    <result column="create_time" property="createTime" jdbcType="BIGINT" />
+  </resultMap>
+  <resultMap id="ResultMapWithBLOBs" type="com.hkkj.oa.entity.LogSystem" extends="BaseResultMap" >
+    <result column="web_parameter" property="webParameter" jdbcType="LONGVARCHAR" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, module, remark, client_ip, call_class, call_method, call_type, web_full_path, 
+    web_method, web_client_name, web_client_browser, web_client_browser_version, web_client_os, 
+    begin_time, end_time, use_time, create_time
+  </sql>
+  <sql id="Blob_Column_List" >
+    web_parameter
+  </sql>
+  <select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs" parameterType="java.lang.Long" >
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from s_log_system
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long" >
+    delete from s_log_system
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.hkkj.oa.entity.LogSystem" >
+    insert into s_log_system (id, module, remark, 
+      client_ip, call_class, call_method, 
+      call_type, web_full_path, web_method, 
+      web_client_name, web_client_browser, web_client_browser_version, 
+      web_client_os, begin_time, end_time, 
+      use_time, create_time, web_parameter
+      )
+    values (#{id,jdbcType=BIGINT}, #{module,jdbcType=VARCHAR}, #{remark,jdbcType=VARCHAR}, 
+      #{clientIp,jdbcType=INTEGER}, #{callClass,jdbcType=VARCHAR}, #{callMethod,jdbcType=VARCHAR}, 
+      #{callType,jdbcType=INTEGER}, #{webFullPath,jdbcType=VARCHAR}, #{webMethod,jdbcType=VARCHAR}, 
+      #{webClientName,jdbcType=VARCHAR}, #{webClientBrowser,jdbcType=VARCHAR}, #{webClientBrowserVersion,jdbcType=VARCHAR}, 
+      #{webClientOs,jdbcType=VARCHAR}, #{beginTime,jdbcType=BIGINT}, #{endTime,jdbcType=BIGINT}, 
+      #{useTime,jdbcType=INTEGER}, #{createTime,jdbcType=BIGINT}, #{webParameter,jdbcType=LONGVARCHAR}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.hkkj.oa.entity.LogSystem" >
+    insert into s_log_system
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        id,
+      </if>
+      <if test="module != null" >
+        module,
+      </if>
+      <if test="remark != null" >
+        remark,
+      </if>
+      <if test="clientIp != null" >
+        client_ip,
+      </if>
+      <if test="callClass != null" >
+        call_class,
+      </if>
+      <if test="callMethod != null" >
+        call_method,
+      </if>
+      <if test="callType != null" >
+        call_type,
+      </if>
+      <if test="webFullPath != null" >
+        web_full_path,
+      </if>
+      <if test="webMethod != null" >
+        web_method,
+      </if>
+      <if test="webClientName != null" >
+        web_client_name,
+      </if>
+      <if test="webClientBrowser != null" >
+        web_client_browser,
+      </if>
+      <if test="webClientBrowserVersion != null" >
+        web_client_browser_version,
+      </if>
+      <if test="webClientOs != null" >
+        web_client_os,
+      </if>
+      <if test="beginTime != null" >
+        begin_time,
+      </if>
+      <if test="endTime != null" >
+        end_time,
+      </if>
+      <if test="useTime != null" >
+        use_time,
+      </if>
+      <if test="createTime != null" >
+        create_time,
+      </if>
+      <if test="webParameter != null" >
+        web_parameter,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="id != null" >
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="module != null" >
+        #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="clientIp != null" >
+        #{clientIp,jdbcType=INTEGER},
+      </if>
+      <if test="callClass != null" >
+        #{callClass,jdbcType=VARCHAR},
+      </if>
+      <if test="callMethod != null" >
+        #{callMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null" >
+        #{callType,jdbcType=INTEGER},
+      </if>
+      <if test="webFullPath != null" >
+        #{webFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webMethod != null" >
+        #{webMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientName != null" >
+        #{webClientName,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientBrowser != null" >
+        #{webClientBrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientBrowserVersion != null" >
+        #{webClientBrowserVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientOs != null" >
+        #{webClientOs,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="useTime != null" >
+        #{useTime,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="webParameter != null" >
+        #{webParameter,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.hkkj.oa.entity.LogSystem" >
+    update s_log_system
+    <set >
+      <if test="module != null" >
+        module = #{module,jdbcType=VARCHAR},
+      </if>
+      <if test="remark != null" >
+        remark = #{remark,jdbcType=VARCHAR},
+      </if>
+      <if test="clientIp != null" >
+        client_ip = #{clientIp,jdbcType=INTEGER},
+      </if>
+      <if test="callClass != null" >
+        call_class = #{callClass,jdbcType=VARCHAR},
+      </if>
+      <if test="callMethod != null" >
+        call_method = #{callMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="callType != null" >
+        call_type = #{callType,jdbcType=INTEGER},
+      </if>
+      <if test="webFullPath != null" >
+        web_full_path = #{webFullPath,jdbcType=VARCHAR},
+      </if>
+      <if test="webMethod != null" >
+        web_method = #{webMethod,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientName != null" >
+        web_client_name = #{webClientName,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientBrowser != null" >
+        web_client_browser = #{webClientBrowser,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientBrowserVersion != null" >
+        web_client_browser_version = #{webClientBrowserVersion,jdbcType=VARCHAR},
+      </if>
+      <if test="webClientOs != null" >
+        web_client_os = #{webClientOs,jdbcType=VARCHAR},
+      </if>
+      <if test="beginTime != null" >
+        begin_time = #{beginTime,jdbcType=BIGINT},
+      </if>
+      <if test="endTime != null" >
+        end_time = #{endTime,jdbcType=BIGINT},
+      </if>
+      <if test="useTime != null" >
+        use_time = #{useTime,jdbcType=INTEGER},
+      </if>
+      <if test="createTime != null" >
+        create_time = #{createTime,jdbcType=BIGINT},
+      </if>
+      <if test="webParameter != null" >
+        web_parameter = #{webParameter,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.hkkj.oa.entity.LogSystem" >
+    update s_log_system
+    set module = #{module,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      client_ip = #{clientIp,jdbcType=INTEGER},
+      call_class = #{callClass,jdbcType=VARCHAR},
+      call_method = #{callMethod,jdbcType=VARCHAR},
+      call_type = #{callType,jdbcType=INTEGER},
+      web_full_path = #{webFullPath,jdbcType=VARCHAR},
+      web_method = #{webMethod,jdbcType=VARCHAR},
+      web_client_name = #{webClientName,jdbcType=VARCHAR},
+      web_client_browser = #{webClientBrowser,jdbcType=VARCHAR},
+      web_client_browser_version = #{webClientBrowserVersion,jdbcType=VARCHAR},
+      web_client_os = #{webClientOs,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      use_time = #{useTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT},
+      web_parameter = #{webParameter,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.hkkj.oa.entity.LogSystem" >
+    update s_log_system
+    set module = #{module,jdbcType=VARCHAR},
+      remark = #{remark,jdbcType=VARCHAR},
+      client_ip = #{clientIp,jdbcType=INTEGER},
+      call_class = #{callClass,jdbcType=VARCHAR},
+      call_method = #{callMethod,jdbcType=VARCHAR},
+      call_type = #{callType,jdbcType=INTEGER},
+      web_full_path = #{webFullPath,jdbcType=VARCHAR},
+      web_method = #{webMethod,jdbcType=VARCHAR},
+      web_client_name = #{webClientName,jdbcType=VARCHAR},
+      web_client_browser = #{webClientBrowser,jdbcType=VARCHAR},
+      web_client_browser_version = #{webClientBrowserVersion,jdbcType=VARCHAR},
+      web_client_os = #{webClientOs,jdbcType=VARCHAR},
+      begin_time = #{beginTime,jdbcType=BIGINT},
+      end_time = #{endTime,jdbcType=BIGINT},
+      use_time = #{useTime,jdbcType=INTEGER},
+      create_time = #{createTime,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>
